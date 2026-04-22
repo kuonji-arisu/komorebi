@@ -1,0 +1,10 @@
+{
+  "name": "Komorebi",
+  "title": "Komorebi",
+  "description": "A minimal personal blog about software, writing, and the small systems that make work calmer.",
+  "url": "https://example.com",
+  "author": "Kuon",
+  "locale": "en_US",
+  "ogImage": "/og-default.svg",
+  "feedPath": "/feed.xml"
+}

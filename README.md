@@ -1,48 +1,113 @@
-# my-blog
+# Komorebi
 
-This template should help get you started developing with Vue 3 in Vite.
+Komorebi is a minimal personal blog built with Vue 3, Vite, Vue Router, and Vite SSG. It reads local Markdown files at build time and deploys as static HTML.
 
-## Recommended IDE Setup
+## Features
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Static generation with `vite-ssg`
+- Markdown posts from `src/content/posts`
+- Frontmatter parsing with `gray-matter`
+- Markdown rendering with `markdown-it`
+- Shiki code highlighting
+- Home, post, about, tag, and 404 pages
+- Light and dark themes using CSS tokens
+- Per-page SEO with canonical links, Open Graph metadata, and article JSON-LD
+- Generated `sitemap.xml`, `robots.txt`, and `feed.xml`
 
-## Recommended Browser Setup
+## Project Structure
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+```text
+plugins/              Build-time content and static file generation
+public/               Static assets copied into the build output
+src/components/       Small shared Vue components
+src/config/           Site metadata
+src/content/posts/    Markdown posts
+src/lib/              Content helpers, shared types, slug utilities
+src/pages/            Route-level Vue pages
+src/router/           Vue Router route records
+src/styles/           Tokens, base layout, prose styles
+```
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Setup
 
 ```sh
 pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Build and preview the static site:
 
 ```sh
 pnpm build
+pnpm preview
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+`pnpm build` runs TypeScript checks and `vite-ssg build`. The output is written to `dist`.
+
+## Site Metadata
+
+Edit `src/config/site.json` for the site title, description, author, locale, default URL, feed path, and Open Graph image.
+
+For production builds, set `SITE_URL` so generated canonical URLs, Open Graph URLs, RSS links, robots, and sitemap entries use the deployed domain:
 
 ```sh
-pnpm lint
+SITE_URL=https://your-domain.example pnpm build
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:SITE_URL = 'https://your-domain.example'
+pnpm build
+```
+
+## Writing Posts
+
+Create Markdown files in `src/content/posts`. The filename becomes the post slug.
+
+```md
+---
+title: Post title
+date: 2026-04-20
+summary: A short summary for lists and SEO.
+tags:
+  - Vue
+  - Notes
+draft: false
+---
+
+Your post content starts here.
+```
+
+Required frontmatter:
+
+- `title`: post title
+- `date`: ISO-style date string
+- `summary`: short description for lists, SEO, and RSS
+- `tags`: short stable labels used for static tag pages
+
+Optional frontmatter:
+
+- `draft: true` hides a post from routes, lists, RSS, and sitemap output
+
+## Tags
+
+Each tag automatically gets a static page at `/tags/<tag-slug>`. Keep tag names short and stable so URLs remain tidy.
+
+## Styling
+
+Global styles are split into:
+
+- `src/styles/tokens.css`: theme variables
+- `src/styles/base.css`: layout and component-level primitives
+- `src/styles/prose.css`: Markdown typography
+
+The design goal is a quiet single-column reading experience with light borders, soft surfaces, and consistent spacing.
+
+## Deployment
+
+Any static host can serve the `dist` directory. Before deploying, set the production domain with `SITE_URL` and run:
+
+```sh
+pnpm build
 ```

@@ -1,9 +1,14 @@
-import { createApp } from 'vue'
+import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
-import router from './router'
+import { posts, tags } from './lib/content'
+import { routes } from './router'
+import './styles/index.css'
 
-const app = createApp(App)
+export const createApp = ViteSSG(App, {
+  base: import.meta.env.BASE_URL,
+  routes,
+})
 
-app.use(router)
-
-app.mount('#app')
+export function includedRoutes() {
+  return ['/', '/about', '/404', ...posts.map((post) => post.path), ...tags.map((tag) => tag.path)]
+}
