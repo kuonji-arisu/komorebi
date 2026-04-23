@@ -71,7 +71,7 @@ useHead(() => {
       </ul>
     </header>
 
-    <nav v-if="post.headings.length" class="article-toc" aria-label="Post contents">
+    <nav v-if="post.showToc" class="article-toc" aria-label="Post contents">
       <a
         v-for="heading in post.headings"
         :key="heading.id"
@@ -82,7 +82,7 @@ useHead(() => {
       </a>
     </nav>
 
-    <div class="prose" v-html="post.html" />
+    <div class="prose article-prose" v-html="post.html" />
   </article>
 
   <section v-else class="page-intro">

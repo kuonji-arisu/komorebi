@@ -11,6 +11,7 @@ export interface Post extends PostFrontmatter {
   path: string
   html: string
   headings: PostHeading[]
+  showToc: boolean
 }
 
 export interface PageFrontmatter {

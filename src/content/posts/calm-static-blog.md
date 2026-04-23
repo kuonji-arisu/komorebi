@@ -8,6 +8,8 @@ tags:
   - Notes
 ---
 
+<!-- toc -->
+
 A personal blog gets easier to maintain when the moving parts stay visible. Markdown files are enough
 for most posts, and static output keeps deployment simple.
 

@@ -15,6 +15,8 @@
 - Keep post frontmatter simple and explicit: title, date, summary, tags, draft.
 - Keep content page frontmatter simple and explicit: title, summary.
 - Draft posts must not appear in lists, generated routes, feeds, or sitemap output.
+- Post table of contents display is opt-in through a `toc` comment directive as the first non-empty line of the Markdown body, such as `<!-- toc -->` or `<!---- toc ---->`.
+- Do not infer table of contents visibility from heading count alone, and do not solve it with CSS-only hiding.
 - Use Vue route pages for interactive or mixed pages; Markdown content pages are content sources, not a replacement for route-level Vue composition.
 - Do not automatically map `src/content/pages/*.md` to routes. Add a route-level Vue page and SSG route explicitly when a content page should be public.
 - Do not introduce a generic `ContentPageView` until several real pages share enough behavior to justify it.

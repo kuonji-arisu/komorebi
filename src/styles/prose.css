@@ -4,16 +4,6 @@
   line-height: 1.82;
 }
 
-.article-page .prose {
-  width: min(100%, var(--article-width));
-  margin: 0 auto;
-  padding-top: var(--space-7);
-}
-
-.article-toc + .prose {
-  padding-top: var(--space-4);
-}
-
 .prose > *:first-child {
   margin-top: 0;
 }

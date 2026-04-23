@@ -155,6 +155,7 @@ function parsePost(postsDir: string, filename: string, markdown: MarkdownIt): Po
   const raw = readFileSync(filePath, 'utf8')
   const { data, content } = matter(raw)
   const frontmatter = normalizeFrontmatter(data, filePath)
+  const tocDirective = extractTocDirective(content)
   const slug = slugFromFilename(filename)
   const env: MarkdownEnv = {
     headingCounts: new Map(),
@@ -165,8 +166,9 @@ function parsePost(postsDir: string, filename: string, markdown: MarkdownIt): Po
     ...frontmatter,
     slug,
     path: `/posts/${slug}`,
-    html: markdown.render(content, env),
+    html: markdown.render(tocDirective.content, env),
     headings: env.headings,
+    showToc: tocDirective.hasToc && env.headings.length > 0,
   }
 }
 
@@ -259,6 +261,26 @@ function normalizeTags(value: unknown, filePath: string) {
 
 function failInvalidTags(filePath: string): never {
   throw new Error(`${filePath} has an invalid "tags" frontmatter field.`)
+}
+
+function extractTocDirective(content: string) {
+  const tocDirectivePattern = /^[ \t]*<!-{2,}\s*toc\s*-{2,}>[ \t]*(?:\r?\n|$)/i
+  const leadingBlankLinesPattern = /^(?:[ \t]*\r?\n)*/
+  const leadingBlankLines = content.match(leadingBlankLinesPattern)?.[0] ?? ''
+  const firstContent = content.slice(leadingBlankLines.length)
+  const match = firstContent.match(tocDirectivePattern)
+
+  if (!match) {
+    return {
+      content,
+      hasToc: false,
+    }
+  }
+
+  return {
+    content: firstContent.slice(match[0].length).replace(/^(?:[ \t]*\r?\n)+/, ''),
+    hasToc: true,
+  }
 }
 
 function readMarkdownFilenames(contentDir: string) {

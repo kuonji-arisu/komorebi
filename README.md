@@ -92,6 +92,26 @@ Optional frontmatter:
 
 - `draft: true` hides a post from routes, lists, RSS, and sitemap output
 
+## Post Table Of Contents
+
+Posts do not show a table of contents by default. To show one, add a `toc` marker as the first non-empty line of the Markdown body:
+
+```md
+---
+title: Post title
+date: 2026-04-20
+summary: A short summary for lists and SEO.
+tags:
+  - Vue
+---
+
+<!-- toc -->
+
+Your post content starts here.
+```
+
+The table of contents collects `h2` through `h4` headings. Only the first non-empty body line is treated as the marker, and the marker only controls whether the route-level post page displays the table of contents; it does not control where the table appears. The marker may use two or more hyphens on either side, so `<!-- toc -->` and `<!---- toc ---->` both work.
+
 ## Page Types
 
 This site keeps routing and page composition in Vue. Markdown is a build-time content source, not the page system itself.

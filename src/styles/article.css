@@ -27,6 +27,20 @@
   line-height: 1.72;
 }
 
+.article-prose {
+  width: min(100%, var(--article-width));
+  margin: 0 auto;
+  padding-top: var(--space-7);
+}
+
+.article-header + .article-prose {
+  padding-top: 0;
+}
+
+.article-toc + .article-prose {
+  padding-top: var(--space-4);
+}
+
 .article-toc {
   width: min(100%, var(--article-width));
   margin: 0 auto;
