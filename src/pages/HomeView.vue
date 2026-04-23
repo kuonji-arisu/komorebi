@@ -27,7 +27,12 @@ useHead({
   <section class="post-list home-post-list" aria-labelledby="latest-posts">
     <h2 id="latest-posts">Latest Writing</h2>
 
-    <article v-for="post in posts" :key="post.slug" class="post-card">
+    <article
+      v-for="post in posts"
+      :key="post.slug"
+      class="post-card"
+      :class="{ 'post-card--with-tags': post.tags.length }"
+    >
       <RouterLink class="post-card__link" :to="post.path">
         <time :datetime="post.date">{{ formatPostDate(post.date) }}</time>
         <h3>{{ post.title }}</h3>
