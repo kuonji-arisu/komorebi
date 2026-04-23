@@ -4,16 +4,23 @@
   "author": "Kuon",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite-ssg build",
     "type-check": "vue-tsc --build",
-    "lint": "run-s lint:*",
-    "lint:oxlint": "oxlint . --fix",
-    "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "lint": "pnpm run lint:fix",
+    "lint:fix": "oxlint . --fix && eslint . --fix --cache",
+    "lint:fix:oxlint": "oxlint . --fix",
+    "lint:fix:eslint": "eslint . --fix --cache",
+    "lint:check": "oxlint . && eslint .",
+    "lint:check:oxlint": "oxlint .",
+    "lint:check:eslint": "eslint .",
+    "format": "prettier --write --experimental-cli src/",
+    "format:check": "prettier --check --experimental-cli src/",
+    "ci": "pnpm run type-check && pnpm run lint:check && pnpm run format:check && pnpm run build"
   },
   "dependencies": {
     "@unhead/vue": "^2.1.13",

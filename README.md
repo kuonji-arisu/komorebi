@@ -37,6 +37,18 @@ pnpm install
 pnpm dev
 ```
 
+Local maintenance commands:
+
+```sh
+pnpm lint
+pnpm lint:check
+pnpm format
+pnpm format:check
+pnpm run ci
+```
+
+`pnpm lint` and `pnpm format` may rewrite source files. The `*:check` commands only report issues, and `pnpm run ci` chains those checks with the static build for CI and review.
+
 Build and preview the static site:
 
 ```sh

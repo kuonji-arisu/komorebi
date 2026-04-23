@@ -19,9 +19,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background:
-    linear-gradient(180deg, var(--surface-page-glow), transparent 19rem),
-    var(--color-bg);
+  background: linear-gradient(180deg, var(--surface-page-glow), transparent 19rem), var(--color-bg);
 }
 
 button,
