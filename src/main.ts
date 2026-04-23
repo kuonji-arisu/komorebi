@@ -9,6 +9,8 @@ export const createApp = ViteSSG(App, {
   routes,
 })
 
+// Static routes stay explicit for content pages. Add route-level Vue pages here
+// when they should be generated; do not derive routes from src/content/pages.
 export function includedRoutes() {
   return ['/', '/about', '/404', ...posts.map((post) => post.path), ...tags.map((tag) => tag.path)]
 }

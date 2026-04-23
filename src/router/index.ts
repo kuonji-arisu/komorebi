@@ -5,6 +5,8 @@ import NotFoundView from '@/pages/NotFoundView.vue'
 import PostView from '@/pages/PostView.vue'
 import TagView from '@/pages/TagView.vue'
 
+// Keep route-level Vue pages explicit. Markdown files in src/content/pages are
+// content sources for these pages, not automatic route records.
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',

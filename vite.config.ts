@@ -30,6 +30,8 @@ function staticSiteFiles(): Plugin {
     async closeBundle() {
       const siteUrl = process.env.SITE_URL ?? site.url
       const tagRoutes = await readPublishedTagRoutes(rootDir)
+      // Content pages are route-owned. Keep public page URLs explicit here so
+      // sitemap output does not drift into automatic Markdown page routing.
       const urls = ['/', '/about', ...readPublishedPostRoutes(rootDir), ...tagRoutes]
       const now = new Date().toISOString()
       const posts = await readPublishedPosts(rootDir)

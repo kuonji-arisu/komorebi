@@ -16,6 +16,15 @@
 - Keep content page frontmatter simple and explicit: title, summary.
 - Draft posts must not appear in lists, generated routes, feeds, or sitemap output.
 - Use Vue route pages for interactive or mixed pages; Markdown content pages are content sources, not a replacement for route-level Vue composition.
+- Do not automatically map `src/content/pages/*.md` to routes. Add a route-level Vue page and SSG route explicitly when a content page should be public.
+- Do not introduce a generic `ContentPageView` until several real pages share enough behavior to justify it.
+
+## Page Shape Boundaries
+- Create a route-level Vue page for every public page, whether it is pure Vue, mostly Markdown, or a Markdown + Vue mix.
+- Use `src/content/pages/*.md` when a route page needs mostly textual, editor-friendly body copy with simple `title` and `summary` frontmatter.
+- Keep pure Vue pages for pages whose structure, interaction, data composition, or visual layout matters more than Markdown editing convenience.
+- For mixed pages, let the Vue page own layout, metadata, interactive components, and URL; read the Markdown body as one content source inside that page.
+- Prefer thin helpers such as `getContentPage` or `useContentPageHead` over a broad page abstraction.
 
 ## Design Direction
 - Maintain the restrained, minimal reading experience.

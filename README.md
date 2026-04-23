@@ -92,6 +92,16 @@ Optional frontmatter:
 
 - `draft: true` hides a post from routes, lists, RSS, and sitemap output
 
+## Page Types
+
+This site keeps routing and page composition in Vue. Markdown is a build-time content source, not the page system itself.
+
+- Pure Markdown-like pages still get a route-level Vue page, such as `src/pages/AboutView.vue`, which reads a matching file from `src/content/pages`.
+- Pure Vue pages should stay in `src/pages` when the page is mostly layout, interaction, or custom composition.
+- Mixed pages should let the Vue page own the URL, SEO, layout, and interactive parts, then render Markdown from `src/content/pages` only where prose belongs.
+
+Do not automatically register `src/content/pages/*.md` as routes. Add public URLs explicitly in `src/router/index.ts`, `src/main.ts`, and static metadata generation when needed.
+
 ## Content Pages
 
 Content pages such as About live in `src/content/pages` and are rendered by route-level Vue pages. Use simple frontmatter:
@@ -103,7 +113,14 @@ summary: A short page summary.
 ---
 ```
 
-Use Markdown pages for mostly textual content such as About, Links, or Now. Use Vue route pages for interactive pages or mixed pages; they can read Markdown through the build-time `virtual:content` source and compose it with Vue UI.
+Use Markdown content pages for mostly textual content such as About, Links, or Now. The recommended pattern is:
+
+1. Create or update a route-level Vue page in `src/pages`.
+2. Read the Markdown source with `getContentPage('<slug>')`.
+3. Set page metadata with `useContentPageHead(...)`, passing the route path owned by the Vue page.
+4. Render the Markdown body inside the page's chosen layout.
+
+Avoid a generic `ContentPageView` until several real pages share the same behavior, layout, and metadata needs.
 
 ## Tags
 

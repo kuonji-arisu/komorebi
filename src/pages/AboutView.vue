@@ -1,23 +1,13 @@
 <script setup lang="ts">
-import { useHead } from '@unhead/vue'
-import { absoluteUrl, site } from '@/config/site'
-import { getPageBySlug } from '@/lib/content'
+import { site } from '@/config/site'
+import { getContentPage, useContentPageHead } from '@/lib/content-pages'
 
-const page = getPageBySlug('about')
-const title = page?.title ?? 'About'
-const description = page?.summary ?? `A short about page for the person behind ${site.title}.`
-const headTitle = `${title} | ${site.title}`
-
-useHead({
-  title: headTitle,
-  meta: [
-    { name: 'description', content: description },
-    { property: 'og:title', content: headTitle },
-    { property: 'og:description', content: description },
-    { property: 'og:type', content: 'profile' },
-    { property: 'og:url', content: absoluteUrl('/about') },
-  ],
-  link: [{ rel: 'canonical', href: absoluteUrl('/about') }],
+const page = getContentPage('about')
+const { title, description } = useContentPageHead(page, {
+  routePath: '/about',
+  fallbackTitle: 'About',
+  fallbackDescription: `A short about page for the person behind ${site.title}.`,
+  ogType: 'profile',
 })
 </script>
 
