@@ -36,13 +36,15 @@ useHead(() => {
 </script>
 
 <template>
-  <section v-if="tag" class="page-intro">
+  <section v-if="tag" class="page-intro tag-intro">
     <p class="eyebrow">Tag</p>
-    <h1>{{ tag.name }}</h1>
-    <p class="lede">{{ tag.count }} post{{ tag.count === 1 ? '' : 's' }} collected under this tag.</p>
+    <h1 class="page-title">{{ tag.name }}</h1>
+    <p class="page-summary tag-summary">
+      {{ tag.count }} post{{ tag.count === 1 ? '' : 's' }} collected under this tag.
+    </p>
   </section>
 
-  <section v-if="tag" class="post-list" aria-labelledby="tag-posts">
+  <section v-if="tag" class="post-list tag-post-list" aria-labelledby="tag-posts">
     <h2 id="tag-posts">Writing</h2>
 
     <article v-for="post in taggedPosts" :key="post.slug" class="post-card">
@@ -56,8 +58,8 @@ useHead(() => {
 
   <section v-else class="page-intro">
     <p class="eyebrow">404</p>
-    <h1>Tag not found</h1>
-    <p class="lede">There are no published notes under this tag.</p>
+    <h1 class="page-title">Tag not found</h1>
+    <p class="page-summary">There are no published notes under this tag.</p>
     <RouterLink class="text-link" to="/">Return home</RouterLink>
   </section>
 </template>

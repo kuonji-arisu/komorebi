@@ -4,7 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { postsPlugin, readPublishedPostRoutes, readPublishedPosts, readPublishedTagRoutes } from './plugins/posts'
+import { contentPlugin, readPublishedPostRoutes, readPublishedPosts, readPublishedTagRoutes } from './plugins/content'
 import { site } from './src/config/site'
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
@@ -15,7 +15,7 @@ export default defineConfig({
   define: {
     __SITE_URL__: JSON.stringify(process.env.SITE_URL ?? ''),
   },
-  plugins: [postsPlugin(rootDir), vue(), staticSiteFiles()],
+  plugins: [contentPlugin(rootDir), vue(), staticSiteFiles()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

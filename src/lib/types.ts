@@ -13,6 +13,17 @@ export interface Post extends PostFrontmatter {
   headings: PostHeading[]
 }
 
+export interface PageFrontmatter {
+  title: string
+  summary: string
+}
+
+export interface Page extends PageFrontmatter {
+  slug: string
+  path: string
+  html: string
+}
+
 export interface PostHeading {
   id: string
   level: number

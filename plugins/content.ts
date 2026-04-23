@@ -7,10 +7,10 @@ import type Token from 'markdown-it/lib/token.mjs'
 import { createHighlighter, type Highlighter } from 'shiki'
 import type { Plugin } from 'vite'
 import { slugify } from '../src/lib/slugs'
-import type { Post, PostFrontmatter, PostHeading } from '../src/lib/types'
+import type { Page, PageFrontmatter, Post, PostFrontmatter, PostHeading } from '../src/lib/types'
 
-const virtualModuleId = 'virtual:posts'
-const resolvedVirtualModuleId = `\0${virtualModuleId}`
+const virtualContentModuleId = 'virtual:content'
+const resolvedVirtualContentModuleId = `\0${virtualContentModuleId}`
 
 interface MarkdownEnv {
   headingCounts: Map<string, number>
@@ -19,33 +19,41 @@ interface MarkdownEnv {
 
 let highlighterPromise: Promise<Highlighter> | undefined
 
-export function postsPlugin(rootDir: string): Plugin {
+export function contentPlugin(rootDir: string): Plugin {
   const postsDir = join(rootDir, 'src', 'content', 'posts')
+  const pagesDir = join(rootDir, 'src', 'content', 'pages')
 
   return {
-    name: 'quiet-notes-posts',
+    name: 'komorebi-content',
     resolveId(id) {
-      return id === virtualModuleId ? resolvedVirtualModuleId : undefined
+      return id === virtualContentModuleId ? resolvedVirtualContentModuleId : undefined
     },
     async load(id) {
-      if (id !== resolvedVirtualModuleId) {
+      if (id !== resolvedVirtualContentModuleId) {
         return undefined
       }
 
-      for (const filename of readPostFilenames(postsDir)) {
+      for (const filename of readMarkdownFilenames(postsDir)) {
         this.addWatchFile(join(postsDir, filename))
       }
 
-      const posts = await readPublishedPosts(rootDir)
+      for (const filename of readMarkdownFilenames(pagesDir)) {
+        this.addWatchFile(join(pagesDir, filename))
+      }
 
-      return `export const posts = ${JSON.stringify(posts)}`
+      const [posts, pages] = await Promise.all([readPublishedPosts(rootDir), readContentPages(rootDir)])
+
+      return `export const posts = ${JSON.stringify(posts)}\nexport const pages = ${JSON.stringify(pages)}`
     },
     async handleHotUpdate(context) {
-      if (!context.file.endsWith('.md') || !context.file.includes(postsDir)) {
+      if (
+        !context.file.endsWith('.md') ||
+        (!context.file.includes(postsDir) && !context.file.includes(pagesDir))
+      ) {
         return undefined
       }
 
-      const mod = context.server.moduleGraph.getModuleById(resolvedVirtualModuleId)
+      const mod = context.server.moduleGraph.getModuleById(resolvedVirtualContentModuleId)
 
       if (mod) {
         context.server.moduleGraph.invalidateModule(mod)
@@ -60,7 +68,7 @@ export function postsPlugin(rootDir: string): Plugin {
 export function readPublishedPostRoutes(rootDir: string) {
   const postsDir = join(rootDir, 'src', 'content', 'posts')
 
-  return readPostFilenames(postsDir)
+  return readMarkdownFilenames(postsDir)
     .map((filename) => {
       const raw = readFileSync(join(postsDir, filename), 'utf8')
       const { data } = matter(raw)
@@ -84,10 +92,20 @@ export async function readPublishedPosts(rootDir: string) {
   const highlighter = await getHighlighter()
   const markdown = createMarkdownRenderer(highlighter)
 
-  return readPostFilenames(postsDir)
+  return readMarkdownFilenames(postsDir)
     .map((filename) => parsePost(postsDir, filename, markdown))
     .filter((post) => !post.draft)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+
+export async function readContentPages(rootDir: string) {
+  const pagesDir = join(rootDir, 'src', 'content', 'pages')
+  const highlighter = await getHighlighter()
+  const markdown = createMarkdownRenderer(highlighter)
+
+  return readMarkdownFilenames(pagesDir)
+    .map((filename) => parsePage(pagesDir, filename, markdown))
+    .sort((a, b) => a.slug.localeCompare(b.slug))
 }
 
 function createMarkdownRenderer(highlighter: Highlighter) {
@@ -152,6 +170,25 @@ function parsePost(postsDir: string, filename: string, markdown: MarkdownIt): Po
   }
 }
 
+function parsePage(pagesDir: string, filename: string, markdown: MarkdownIt): Page {
+  const filePath = join(pagesDir, filename)
+  const raw = readFileSync(filePath, 'utf8')
+  const { data, content } = matter(raw)
+  const frontmatter = normalizePageFrontmatter(data, filePath)
+  const slug = slugFromFilename(filename)
+  const env: MarkdownEnv = {
+    headingCounts: new Map(),
+    headings: [],
+  }
+
+  return {
+    ...frontmatter,
+    slug,
+    path: `/${slug}`,
+    html: markdown.render(content, env),
+  }
+}
+
 function normalizeFrontmatter(data: Record<string, unknown>, filePath: string): PostFrontmatter {
   const title = readRequiredString(data.title, 'title', filePath)
   const date = normalizeDate(data.date, filePath)
@@ -164,6 +201,16 @@ function normalizeFrontmatter(data: Record<string, unknown>, filePath: string): 
     summary,
     tags,
     draft: data.draft === true,
+  }
+}
+
+function normalizePageFrontmatter(data: Record<string, unknown>, filePath: string): PageFrontmatter {
+  const title = readRequiredString(data.title, 'title', filePath)
+  const summary = readRequiredString(data.summary, 'summary', filePath)
+
+  return {
+    title,
+    summary,
   }
 }
 
@@ -214,8 +261,8 @@ function failInvalidTags(filePath: string): never {
   throw new Error(`${filePath} has an invalid "tags" frontmatter field.`)
 }
 
-function readPostFilenames(postsDir: string) {
-  return readdirSync(postsDir).filter((filename) => filename.endsWith('.md'))
+function readMarkdownFilenames(contentDir: string) {
+  return readdirSync(contentDir).filter((filename) => filename.endsWith('.md'))
 }
 
 function slugFromFilename(filename: string) {

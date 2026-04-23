@@ -18,13 +18,13 @@ useHead({
 </script>
 
 <template>
-  <section class="page-intro" aria-labelledby="home-title">
+  <section class="page-intro home-intro" aria-labelledby="home-title">
     <p class="eyebrow">Personal blog</p>
-    <h1 id="home-title">{{ site.title }}</h1>
-    <p class="lede">{{ site.description }}</p>
+    <h1 id="home-title" class="page-title home-title">{{ site.title }}</h1>
+    <p class="page-summary home-summary">{{ site.description }}</p>
   </section>
 
-  <section class="post-list" aria-labelledby="latest-posts">
+  <section class="post-list home-post-list" aria-labelledby="latest-posts">
     <h2 id="latest-posts">Latest Writing</h2>
 
     <article v-for="post in posts" :key="post.slug" class="post-card">

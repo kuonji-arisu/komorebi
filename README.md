@@ -6,6 +6,7 @@ Komorebi is a minimal personal blog built with Vue 3, Vite, Vue Router, and Vite
 
 - Static generation with `vite-ssg`
 - Markdown posts from `src/content/posts`
+- Markdown content pages from `src/content/pages`
 - Frontmatter parsing with `gray-matter`
 - Markdown rendering with `markdown-it`
 - Shiki code highlighting
@@ -21,11 +22,12 @@ plugins/              Build-time content and static file generation
 public/               Static assets copied into the build output
 src/components/       Small shared Vue components
 src/config/           Site metadata
+src/content/pages/    Markdown content pages such as About
 src/content/posts/    Markdown posts
 src/lib/              Content helpers, shared types, slug utilities
 src/pages/            Route-level Vue pages
 src/router/           Vue Router route records
-src/styles/           Tokens, base layout, prose styles
+src/styles/           CSS tokens, base rules, layout, components, page headings, article, page variants, prose
 ```
 
 ## Setup
@@ -90,6 +92,19 @@ Optional frontmatter:
 
 - `draft: true` hides a post from routes, lists, RSS, and sitemap output
 
+## Content Pages
+
+Content pages such as About live in `src/content/pages` and are rendered by route-level Vue pages. Use simple frontmatter:
+
+```md
+---
+title: Page title
+summary: A short page summary.
+---
+```
+
+Use Markdown pages for mostly textual content such as About, Links, or Now. Use Vue route pages for interactive pages or mixed pages; they can read Markdown through the build-time `virtual:content` source and compose it with Vue UI.
+
 ## Tags
 
 Each tag automatically gets a static page at `/tags/<tag-slug>`. Keep tag names short and stable so URLs remain tidy.
@@ -99,7 +114,12 @@ Each tag automatically gets a static page at `/tags/<tag-slug>`. Keep tag names 
 Global styles are split into:
 
 - `src/styles/tokens.css`: theme variables
-- `src/styles/base.css`: layout and component-level primitives
+- `src/styles/base.css`: reset rules and element defaults
+- `src/styles/layout.css`: site shell, header, navigation, footer, and theme toggle layout
+- `src/styles/components.css`: reusable visual pieces such as post cards, tags, and text links
+- `src/styles/page-headings.css`: shared page intro, title, and summary patterns
+- `src/styles/article.css`: post header, metadata, title, summary, table of contents, and article back-link styles
+- `src/styles/pages.css`: route-level layout variants for home, about, and tag pages
 - `src/styles/prose.css`: Markdown typography
 
 The design goal is a quiet single-column reading experience with light borders, soft surfaces, and consistent spacing.

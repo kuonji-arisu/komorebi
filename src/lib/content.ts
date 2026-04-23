@@ -1,12 +1,17 @@
-import { posts as generatedPosts } from 'virtual:posts'
+import { pages as generatedPages, posts as generatedPosts } from 'virtual:content'
 import { slugify } from './slugs'
-import type { Post, Tag } from './types'
+import type { Page, Post, Tag } from './types'
 
 export const posts: Post[] = generatedPosts
+export const pages: Page[] = generatedPages
 export const tags: Tag[] = buildTags(posts)
 
 export function getPostBySlug(slug: string) {
   return posts.find((post) => post.slug === slug)
+}
+
+export function getPageBySlug(slug: string) {
+  return pages.find((page) => page.slug === slug)
 }
 
 export function getTagBySlug(slug: string) {

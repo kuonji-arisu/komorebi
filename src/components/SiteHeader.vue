@@ -2,12 +2,14 @@
 import { RouterLink } from 'vue-router'
 import { site } from '@/config/site'
 import ThemeToggle from './ThemeToggle.vue'
+
+const siteInitial = (site.name.trim() || site.title.trim()).charAt(0).toLocaleUpperCase()
 </script>
 
 <template>
   <header class="site-header">
     <RouterLink class="site-brand" to="/" aria-label="Home">
-      <span class="site-mark" aria-hidden="true">Q</span>
+      <span class="site-mark" aria-hidden="true">{{ siteInitial }}</span>
       <span>{{ site.name }}</span>
     </RouterLink>
 

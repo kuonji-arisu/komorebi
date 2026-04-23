@@ -14,8 +14,8 @@ useHead({
 <template>
   <section class="page-intro">
     <p class="eyebrow">404</p>
-    <h1>This page drifted out of view.</h1>
-    <p class="lede">The link may be old, or the note may have moved.</p>
+    <h1 class="page-title">This page drifted out of view.</h1>
+    <p class="page-summary">The link may be old, or the note may have moved.</p>
     <RouterLink class="text-link" to="/">Return to the latest writing</RouterLink>
   </section>
 </template>

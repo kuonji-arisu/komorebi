@@ -4,20 +4,39 @@
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
-  --color-bg: #fbfbfa;
+  --color-bg: #fcfaf7;
   --color-surface: #ffffff;
-  --color-surface-soft: #f4f5f3;
-  --color-text: #232426;
-  --color-muted: #676d73;
-  --color-subtle: #8a9096;
-  --color-border: #dedfdd;
-  --color-border-strong: #c9cbc8;
+  --color-surface-soft: #f4f3f0;
+  --color-text: #222426;
+  --color-muted: #5f666c;
+  --color-subtle: #8b9298;
+  --color-border: #e2e1dd;
+  --color-border-strong: #cccfca;
   --color-link: #255f9d;
   --color-accent: #2f6f65;
-  --color-code-bg: #f2f4f5;
+  --color-code-bg: #f1f3f3;
   --color-selection: #cfe8e1;
 
-  --shadow-soft: 0 1px 2px rgb(20 24 28 / 0.06), 0 12px 30px rgb(20 24 28 / 0.04);
+  --surface-page-glow: color-mix(in srgb, var(--color-surface-soft) 48%, transparent);
+  --surface-site-mark: color-mix(in srgb, var(--color-surface) 58%, transparent);
+  --surface-post-card: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  --surface-post-card-hover: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  --surface-tag: color-mix(in srgb, var(--color-surface-soft) 34%, transparent);
+
+  --border-site-mark: color-mix(in srgb, var(--color-border) 72%, transparent);
+  --border-control-hover: color-mix(in srgb, var(--color-border) 72%, transparent);
+  --border-post-card: color-mix(in srgb, var(--color-border) 56%, transparent);
+  --border-post-card-hover: color-mix(in srgb, var(--color-border-strong) 66%, transparent);
+  --border-tag: color-mix(in srgb, var(--color-border) 58%, transparent);
+  --border-prose-quote: color-mix(in srgb, var(--color-accent) 72%, var(--color-border));
+  --border-prose-code: color-mix(in srgb, var(--color-border) 78%, transparent);
+
+  --text-site-mark: color-mix(in srgb, var(--color-accent) 80%, var(--color-muted));
+  --text-tag: color-mix(in srgb, var(--color-subtle) 88%, var(--color-muted));
+  --text-back-link: color-mix(in srgb, var(--color-link) 74%, var(--color-muted));
+
+  --shadow-soft: 0 1px 2px rgb(20 24 28 / 0.04);
+  --shadow-hover: 0 8px 22px rgb(20 24 28 / 0.055);
 
   --radius-sm: 6px;
   --radius-md: 8px;
@@ -32,7 +51,9 @@
   --space-7: 3rem;
   --space-8: 4rem;
 
-  --content-width: 720px;
+  --shell-width: 860px;
+  --article-header-width: 820px;
+  --article-width: 760px;
 }
 
 html[data-theme='dark'] {
@@ -50,4 +71,5 @@ html[data-theme='dark'] {
   --color-code-bg: #1a1f23;
   --color-selection: #214c47;
   --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.22), 0 14px 34px rgb(0 0 0 / 0.18);
+  --shadow-hover: 0 10px 28px rgb(0 0 0 / 0.22);
 }

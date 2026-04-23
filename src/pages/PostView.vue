@@ -61,9 +61,9 @@ useHead(() => {
   <article v-if="post" class="article-page">
     <header class="article-header">
       <RouterLink class="back-link" to="/">Back to writing</RouterLink>
-      <time :datetime="post.date">{{ formatPostDate(post.date) }}</time>
-      <h1>{{ post.title }}</h1>
-      <p>{{ post.summary }}</p>
+      <time class="article-meta" :datetime="post.date">{{ formatPostDate(post.date) }}</time>
+      <h1 class="article-title">{{ post.title }}</h1>
+      <p class="article-summary">{{ post.summary }}</p>
       <ul v-if="post.tags.length" class="tag-list" aria-label="Post tags">
         <li v-for="tag in post.tags" :key="tag">
           <RouterLink :to="tagPath(tag)">{{ tag }}</RouterLink>
@@ -87,8 +87,8 @@ useHead(() => {
 
   <section v-else class="page-intro">
     <p class="eyebrow">404</p>
-    <h1>Post not found</h1>
-    <p class="lede">The note you are looking for is not available.</p>
+    <h1 class="page-title">Post not found</h1>
+    <p class="page-summary">The note you are looking for is not available.</p>
     <RouterLink class="text-link" to="/">Return home</RouterLink>
   </section>
 </template>
